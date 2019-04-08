@@ -191,7 +191,7 @@ def direction(dir,x,y,xmax,ymax):
         return y,x
     if x == 0:
         if dir in (1,5,6):
-            return None
+            return None,None
         if y != 0:
             if dir == 2:
                 return y-1,x
@@ -206,7 +206,7 @@ def direction(dir,x,y,xmax,ymax):
             return y,x+1
     elif x == xmax:
         if dir in (3,4,8):
-            return None
+            return None,None
         if y != 0:
             if dir == 2:
                 return y-1,x
@@ -221,7 +221,7 @@ def direction(dir,x,y,xmax,ymax):
             return y,x-1
     if y == 0:
         if dir in (1,2,3):
-            return None
+            return None,None
         if x != 0:
             if dir == 5:
                 return y,x-1
@@ -236,7 +236,7 @@ def direction(dir,x,y,xmax,ymax):
             return y+1,x
     elif y == ymax:
         if dir in (6,7,8):
-            return None
+            return None,None
         if x != 0:
             if dir == 5:
                 return y,x-1
@@ -274,11 +274,10 @@ def get_neighbour(lis,dir,x,y):
     '''
     xmax = len(lis[0])-1
     ymax = len(lis)-1
-    if direction(dir,x,y,xmax,ymax) == None:
-        return None
-    else:
-        y1,x1 = direction(dir,x,y,xmax,ymax)
+    y1,x1 = direction(dir,x,y,xmax,ymax)
+    if y1 != None:
         return lis[y1][x1]
+    return None
 
 
 def game_state(lis):
@@ -296,19 +295,19 @@ def game_state(lis):
     ymax = len(lis)-1
     for x in range(7):
         y = 5
-        while y >= 0 and lis[y][x] != 0:
+        while y >= 0 and lis[y][x] != 0:    #check only values which are != from 0
             color = lis[y][x]
             for dir in range(1,5):
                 count = 1
                 nei = get_neighbour(lis,dir,x,y)
                 if nei == color:
                     count += 1
-                    if direction(dir,x,y,xmax,ymax) != None:
-                        y1,x1 = direction(dir,x,y,xmax,ymax)
+                    y1,x1 = direction(dir,x,y,xmax,ymax)
+                    if y1 != None:
                         if get_neighbour(lis,dir,x1,y1) == color:
                             count += 1
-                            if direction(dir,x1,y1,xmax,ymax) != None:
-                                y2,x2 = direction(dir,x1,y1,xmax,ymax)
+                            y2,x2 = direction(dir,x1,y1,xmax,ymax)
+                            if y2 != None:
                                 if get_neighbour(lis,dir,x2,y2) == color:
                                     count += 1
 
@@ -316,12 +315,12 @@ def game_state(lis):
                 nei = get_neighbour(lis,dir,x,y)
                 if nei == color:
                     count += 1
-                    if direction(dir,x,y,xmax,ymax) != None:
-                        y1,x1 = direction(dir,x,y,xmax,ymax)
+                    y1,x1 = direction(dir,x,y,xmax,ymax)
+                    if y1 != None:
                         if get_neighbour(lis,dir,x1,y1) == color:
                             count += 1
-                            if direction(dir,x1,y1,xmax,ymax) != None:
-                                y2,x2 = direction(dir,x1,y1,xmax,ymax)
+                            y2,x2 = direction(dir,x1,y1,xmax,ymax)
+                            if y2 != None:
                                 if get_neighbour(lis,dir,x2,y2) == color:
                                     count += 1
 
@@ -331,14 +330,23 @@ def game_state(lis):
     return None
 
 def display_game(whosplaying,x_change_counter,is_coin):
-    for i in range(6):
-        for j in range(7):
-            if is_coin[i][j] != 0:
-                x,y = coordinates[i][j]
-                if is_coin[i][j] == 1:  #red coin
-                    Red_board(x,y)
-                else:                   #yellow coin
-                    Yellow_board(x,y)
+    for j in range(7):
+        i = 5
+        while i >= 0 and is_coin[i][j] != 0:    #check only values which are != from 0
+            x,y = coordinates[i][j]
+            if is_coin[i][j] == 1:  #red coin
+                Red_board(x,y)
+            else:                   #yellow coin
+                Yellow_board(x,y)
+            i -= 1
+#    for i in range(6):
+#        for j in range(7):
+#            if is_coin[i][j] != 0:
+#                x,y = coordinates[i][j]
+#                if is_coin[i][j] == 1:  #red coin
+#                    Red_board(x,y)
+#                else:                   #yellow coin
+#                    Yellow_board(x,y)
     Board(x_board,y_board)
 
 def play_coin(x,is_coin_var,whosplaying):
