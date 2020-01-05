@@ -28,21 +28,30 @@ yellow = (235,200, 0)
 
 '''Textes'''
 
-def write_text(text,font,size,color):
-    return pygame.font.SysFont(font,size).render(text,True,color)
+pygame.font.init()
 
-text_red = write_text("Red Won","arial",150,red)
-text_yellow = write_text("Yellow Won",'arial',150,yellow)
-text_tie = write_text("It's A Tie",'arial',150,white)
-texte_intro_1 = write_text("Move With ← and →", 'arial',75, white)
-texte_intro_2 = write_text("Press 'space' To Play", 'arial',75, white)
-texte_intro_two_player_white = write_text("Two Players",'arial',75,white)
-texte_intro_IA_white = write_text("IA",'arial',75,white)
-texte_intro_two_player_black = write_text("Two Players",'arial',75,black)
-texte_intro_IA_black = write_text("IA",'arial',75,black)
-texte_play_again = write_text("Press 'space' To Play Again",'arial',75,white)
-texte_exit_white = write_text("Exit",'arial',75,white)
-texte_exit_black = write_text("Exit",'arial',75,black)
+def write_text(text,font,size,color):
+    if font == 'arial':
+        return pygame.font.SysFont(font,size).render(text,True,color)
+    return pygame.font.Font(font,size).render(text,True,color)
+
+# font = "fontastique/fontastique.ttf"
+# font = "roboto/Roboto-Medium.ttf"
+font = "Constance/Constance.ttf"
+
+text_red = write_text("Red Won",font,150,red)
+text_yellow = write_text("Yellow Won",font,150,yellow)
+text_tie = write_text("It's A Tie",font,150,white)
+texte_intro_1 = write_text("Move With        and      ", font,75, white)
+texte_intro_1_bis = write_text("                      ←           →", 'arial',75, white)
+texte_intro_2 = write_text("Press 'space' To Play", font,75, white)
+texte_intro_two_player_white = write_text("Two Players",font,75,white)
+texte_intro_IA_white = write_text("IA",font,75,white)
+texte_intro_two_player_black = write_text("Two Players",font,75,black)
+texte_intro_IA_black = write_text("IA",font,75,black)
+texte_play_again = write_text("Press 'space' To Play Again",font,75,white)
+texte_exit_white = write_text("Exit",font,75,white)
+texte_exit_black = write_text("Exit",font,75,black)
 
 '''Display the window'''
 gameDisplay = pygame.display.set_mode((display_width,display_height))
@@ -447,9 +456,10 @@ while not done:
     gameDisplay.fill(black)
     Title(TitleImg_2,(display_width - TitleImg_2.get_width()) // 2,50)
     display_text(texte_intro_1,0,-100)
+    display_text(texte_intro_1_bis,0,-104)
     display_text(texte_intro_2,0,50)
     if left:
-        pygame.draw.rect(gameDisplay,white,(130,585,text_width,text_height))
+        pygame.draw.rect(gameDisplay,white,(105,585,text_width,text_height))
         display_text(texte_intro_two_player_black,-200,200)
     if right:
         pygame.draw.rect(gameDisplay,white,(530,585,text_width,text_height))
@@ -460,7 +470,7 @@ while not done:
     if not right:
         display_text(texte_intro_IA_white,200,200)
     pygame.display.update()
-    clock.tick(10)
+    clock.tick(5)
 
 
 left, right, down = False, False, False
@@ -677,7 +687,7 @@ while not done:
 
     display_text(texte_play_again,0,-100)
     if left:
-        pygame.draw.rect(gameDisplay,white,(130,585,text_width,text_height))
+        pygame.draw.rect(gameDisplay,white,(105,585,text_width,text_height))
         display_text(texte_intro_two_player_black,-200,200)
     if right:
         pygame.draw.rect(gameDisplay,white,(530,585,text_width,text_height))
